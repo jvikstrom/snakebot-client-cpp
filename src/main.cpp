@@ -1,5 +1,4 @@
 #include "easywsclient/easywsclient.cpp"
-#include "json.hpp"
 #include "easylogging++.h"
 #include "snake.h"
 #include "messages.h"
@@ -26,7 +25,7 @@ static Snake snake;
 
 std::unique_ptr<WebSocket> connect_to_server()
 {
-  auto url = "ws://" + host + ":" + port + "/" + venue;
+  std::string url = "ws://" + host + ":" + port + "/" + venue;
   std::unique_ptr<WebSocket> ws(WebSocket::from_url(url));
 
   assert(ws);
