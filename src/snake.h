@@ -1,5 +1,5 @@
-#ifndef SNAKE_STRUCT
-#define SNAKE_STRUCT
+#ifndef SNAKE_STRUCT_H
+#define SNAKE_STRUCT_H
 
 #include "json.hpp"
 

@@ -1,5 +1,5 @@
-#ifndef MESSAGES
-#define MESSAGES
+#ifndef GAME_MESSAGES_H
+#define GAME_MESSAGES_H
 
 #include "json.hpp"
 
