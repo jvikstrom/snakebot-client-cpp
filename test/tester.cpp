@@ -79,17 +79,17 @@ TEST_CASE("tile_is_correctly_found", "[util]") {
   std::vector<Tile> row1, row2, row3;
   std::vector<std::vector<Tile>> tiles;
 
-  row1.push_back(Empty);
-  row1.push_back(Food);
-  row1.push_back(Empty);
+  row1.push_back(Tile::Empty);
+  row1.push_back(Tile::Food);
+  row1.push_back(Tile::Empty);
 
-  row2.push_back(SnakeTail);
-  row2.push_back(SnakeHead);
-  row2.push_back(Obstacle);
+  row2.push_back(Tile::SnakeTail);
+  row2.push_back(Tile::SnakeHead);
+  row2.push_back(Tile::Obstacle);
 
-  row3.push_back(Empty);
-  row3.push_back(SnakeHead);
-  row3.push_back(Empty);
+  row3.push_back(Tile::Empty);
+  row3.push_back(Tile::SnakeHead);
+  row3.push_back(Tile::Empty);
 
   tiles.push_back(row1);
   tiles.push_back(row2);
@@ -137,10 +137,10 @@ TEST_CASE("can_snake_move_identifies_correctly", "[util]") {
   std::string id = get_snake_one().id;
   Snake snake = get_snake_by_id(map, id).value();
 
-  REQUIRE(can_snake_move_in_direction(map, snake, Up));
-  REQUIRE(!can_snake_move_in_direction(map, snake, Down));
-  REQUIRE(!can_snake_move_in_direction(map, snake, Left));
-  REQUIRE(!can_snake_move_in_direction(map, snake, Right));
+  REQUIRE(can_snake_move_in_direction(map, snake, Direction::Up));
+  REQUIRE(!can_snake_move_in_direction(map, snake, Direction::Down));
+  REQUIRE(!can_snake_move_in_direction(map, snake, Direction::Left));
+  REQUIRE(!can_snake_move_in_direction(map, snake, Direction::Right));
 };
 
 TEST_CASE("can_not_move_to_walls", "[util]") {
@@ -148,6 +148,6 @@ TEST_CASE("can_not_move_to_walls", "[util]") {
   std::string id = get_snake_two().id;
   Snake snake = get_snake_by_id(map, id).value();
 
-  auto can_move_down = can_snake_move_in_direction(map, snake, Down);
+  auto can_move_down = can_snake_move_in_direction(map, snake, Direction::Down);
   REQUIRE(!can_move_down);
 };

@@ -1,5 +1,4 @@
-#ifndef MAP_STRUCTS_H
-#define MAP_STRUCTS_H
+#pragma once
 
 #include <vector>
 #include <string>
@@ -20,5 +19,3 @@ struct Map {
   std::vector<Snake> snakeInfos;
   int worldTick;
 };
-
-#endif

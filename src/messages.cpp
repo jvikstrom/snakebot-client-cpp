@@ -10,8 +10,7 @@ json start_game() {
   return start_game_msg;
 }
 
-json client_info()
-{
+json client_info() {
   json client_info_msg;
   client_info_msg["type"] = CLIENT_INFO;
   client_info_msg["language"] = "C++";
@@ -23,8 +22,7 @@ json client_info()
   return client_info_msg;
 }
 
-json default_game_settings()
-{
+json default_game_settings() {
   json game_settings;
   game_settings["maxNoofPlayers"] = 5;
   game_settings["startSnakeLenth"] = 1;
@@ -46,8 +44,7 @@ json default_game_settings()
   return game_settings;
 }
 
-json player_registration(std::string snake_name)
-{
+json player_registration(std::string snake_name) {
   json player_registration_msg;
   player_registration_msg["type"] = REGISTER_PLAYER_MESSAGE_TYPE;
   player_registration_msg["playerName"] = snake_name;
@@ -56,8 +53,7 @@ json player_registration(std::string snake_name)
   return player_registration_msg;
 }
 
-json register_move(std::string next_move, json incoming_json)
-{
+json register_move(std::string next_move, json incoming_json) {
   json register_move_msg;
   register_move_msg["type"] = REGISTER_MOVE;
   register_move_msg["direction"] = next_move;

@@ -1,4 +1,4 @@
-CC := g++ -std=gnu++0x
+CC := clang++ -std=c++11
 SRCDIR := src
 BUILDDIR := build
 TARGET := bin/runner
@@ -6,7 +6,7 @@ TARGET := bin/runner
 SRCEXT := cpp
 SOURCES := $(shell find $(SRCDIR) -type f -name *.$(SRCEXT))
 OBJECTS := $(patsubst $(SRCDIR)/%,$(BUILDDIR)/%,$(SOURCES:.$(SRCEXT)=.o))
-CFLAGS := -g # -Wall
+CFLAGS := -g -Wall
 LIB := -L lib
 INC := -I include
 

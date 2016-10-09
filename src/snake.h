@@ -1,5 +1,4 @@
-#ifndef SNAKE_STRUCT_H
-#define SNAKE_STRUCT_H
+#pragma once
 
 #include "json.hpp"
 
@@ -15,5 +14,3 @@ public:
   void on_player_registered();
   void on_invalid_playername();
 };
-
-#endif

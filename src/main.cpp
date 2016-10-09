@@ -23,8 +23,7 @@ static const std::string port = "8080";
 static const std::string venue = "training";
 static Snake snake;
 
-std::unique_ptr<WebSocket> connect_to_server()
-{
+std::unique_ptr<WebSocket> connect_to_server() {
   std::string url = "ws://" + host + ":" + port + "/" + venue;
   std::unique_ptr<WebSocket> ws(WebSocket::from_url(url));
 
@@ -32,8 +31,7 @@ std::unique_ptr<WebSocket> connect_to_server()
   return ws;
 }
 
-void route_message(WebSocket::pointer wsp, const std::string & message)
-{
+void route_message(std::unique_ptr<WebSocket> &wsp, const std::string & message) {
   LOG(DEBUG) << "Received message (in unparsed state)" + message;
 
   json incoming_json = json::parse(message.c_str());
@@ -84,8 +82,7 @@ void route_message(WebSocket::pointer wsp, const std::string & message)
   }
 }
 
-int main(int argc, char* argv[])
-{
+int main(int argc, char* argv[]) {
   START_EASYLOGGINGPP(argc, argv);
   el::Configurations conf("logger.conf");
   el::Loggers::reconfigureAllLoggers(conf);
@@ -99,10 +96,9 @@ int main(int argc, char* argv[])
   ws->poll();
 
   while (ws->getReadyState() != WebSocket::CLOSED) {
-    WebSocket::pointer wsp = &*ws;
     ws->poll();
-    ws->dispatch([wsp](const std::string & message) {
-        route_message(wsp, message);
+    ws->dispatch([&ws](const std::string & message) {
+        route_message(ws, message);
       });
   }
 
