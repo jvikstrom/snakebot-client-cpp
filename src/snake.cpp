@@ -34,4 +34,15 @@ void Snake::on_player_registered() {
 void Snake::on_invalid_playername() {
   LOG(INFO) << "The player name is invalid, try another?";
 };
+
+void Snake::on_game_result(nlohmann::json playerRanks) {
+  LOG(INFO) << "Game result:";
+  nlohmann::json playerRank;
+  el::Logger* defaultLogger = el::Loggers::getLogger("default");
+  for (json::iterator it = playerRanks.begin(); it != playerRanks.end(); ++it) {
+    playerRank = (nlohmann::json) *it;
+    defaultLogger->info("%v.\t%v pts\t%v (%v)", playerRank["rank"], playerRank["points"],
+            playerRank["playerName"], playerRank["alive"] ? "alive" : "dead");
+  }
+};
 ;
