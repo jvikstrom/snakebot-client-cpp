@@ -13,4 +13,5 @@ public:
   void on_game_starting();
   void on_player_registered();
   void on_invalid_playername();
+  void on_game_result(nlohmann::json playerRanks);
 };

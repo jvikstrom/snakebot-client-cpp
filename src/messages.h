@@ -12,6 +12,7 @@ static const std::string PLAYER_REGISTERED = "se.cygni.snake.api.response.Player
 static const std::string INVALID_PLAYER_NAME = "se.cygni.snake.api.exception.InvalidPlayerName";
 static const std::string HEART_BEAT_RESPONSE = "se.cygni.snake.api.response.HeartBeatResponse";
 static const std::string GAME_LINK_EVENT = "se.cygni.snake.api.event.GameLinkEvent";
+static const std::string GAME_RESULT_EVENT = "se.cygni.snake.api.event.GameResultEvent";
 
 // Outbound
 static const std::string REGISTER_PLAYER_MESSAGE_TYPE = "se.cygni.snake.api.request.RegisterPlayer";

@@ -3,6 +3,7 @@
 #include "optional.hpp"
 #include "util.h"
 #include "structs.h"
+#include <algorithm>
 
 using std::experimental::optional;
 
@@ -94,8 +95,8 @@ bool is_tile_available_for_movement(const Map& map, const std::tuple<int, int>& 
   Tile tile = get_tile_at(map, coordinate);
   switch(tile) {
   case Tile::Empty:
-    return true;
   case Tile::Food:
+  case Tile::SnakeTail:
     return true;
   default:
     return false;

@@ -76,6 +76,8 @@ void route_message(std::unique_ptr<WebSocket> &wsp, const std::string & message)
   } else if (type == GAME_LINK_EVENT) {
     std::string url = incoming_json["url"];
     LOG(INFO) << "Watch game at: " + url;
+  } else if (type == GAME_RESULT_EVENT) {
+    snake.on_game_result(incoming_json["playerRanks"]);
   } else {
     LOG(WARNING) << "Unable to route message, did not match any known type";
     LOG(WARNING) << incoming_json.dump(2);
