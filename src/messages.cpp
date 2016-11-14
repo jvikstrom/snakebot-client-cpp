@@ -63,7 +63,7 @@ json client_info() {
   client_info_msg["languageVersion"] = "11";
   client_info_msg["operatingSystem"] = os_name;
   client_info_msg["operatingSystemVersion"] = os_version;
-  client_info_msg["clientVersion"] = "0.1";
+  client_info_msg["clientVersion"] = "1.0";
 
   return client_info_msg;
 }
