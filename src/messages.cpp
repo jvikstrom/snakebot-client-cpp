@@ -1,5 +1,9 @@
-#include <string>
 #include "messages.h"
+#include <cstdio>
+#include <iostream>
+#include <memory>
+#include <stdexcept>
+#include <string>
 #include <sys/utsname.h>
 
 using nlohmann::json;
@@ -9,6 +13,19 @@ json start_game() {
   start_game_msg["type"] = START_GAME;
 
   return start_game_msg;
+}
+
+// Execute a command and return the output of it
+std::string exec(const char* cmd) {
+  char buffer[128];
+  std::string result = "";
+  std::shared_ptr<FILE> pipe(popen(cmd, "r"), pclose);
+  if (!pipe) throw std::runtime_error("popen() failed!");
+  while (!feof(pipe.get())) {
+    if (fgets(buffer, 128, pipe.get()) != NULL)
+      result += buffer;
+  }
+  return result;
 }
 
 std::tuple<std::string, std::string> get_os_info() {
@@ -23,14 +40,15 @@ std::tuple<std::string, std::string> get_os_info() {
 
   return std::make_tuple("Windows", osvi.dwMajorVersion + "." + osvi.dwMinorVersion);
 #elif __linux__ || __FreeBSD__
-    struct utsname osinfo;
+  struct utsname osinfo;
   uname(&osinfo);
   return std::make_tuple(osinfo.sysname, osinfo.version);
 #elif __APPLE__ || __MACH__
-    struct utsname osinfo;
-  uname(&osinfo);
-  // Avoid sending "Darwin" as the OS name for mac os
-  return std::make_tuple("Mac OS X", osinfo.release);
+  // Yep, that appears to be the completely obvious way to do it
+  std::string version = exec("sw_vers -productVersion");
+  // Strip the trailing newline
+  version.erase(std::remove(version.begin(), version.end(), '\n'), version.end());
+  return std::make_tuple("Mac OS X", version);
 #else
   return std::make_tuple("", "");
 #endif
