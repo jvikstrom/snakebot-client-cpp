@@ -1,5 +1,6 @@
 #include <string>
 #include "messages.h"
+#include <sys/utsname.h>
 
 using nlohmann::json;
 
@@ -10,13 +11,40 @@ json start_game() {
   return start_game_msg;
 }
 
+std::tuple<std::string, std::string> get_os_info() {
+#ifdef _WIN32 || _WIN64
+  OSVERSIONINFO osvi;
+  BOOL bIsWindowsXPorLater;
+
+  ZeroMemory(&osvi, sizeof(OSVERSIONINFO));
+  osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
+
+  GetVersionEx(&osvi);
+
+  return std::make_tuple("Windows", osvi.dwMajorVersion + "." + osvi.dwMinorVersion);
+#elif __linux__ || __FreeBSD__
+    struct utsname osinfo;
+  uname(&osinfo);
+  return std::make_tuple(osinfo.sysname, osinfo.version);
+#elif __APPLE__ || __MACH__
+    struct utsname osinfo;
+  uname(&osinfo);
+  // Avoid sending "Darwin" as the OS name for mac os
+  return std::make_tuple("Mac OS X", osinfo.release);
+#else
+  return std::make_tuple("", "");
+#endif
+}
+
 json client_info() {
+  std::string os_name, os_version;
+  std::tie(os_name, os_version) = get_os_info();
   json client_info_msg;
   client_info_msg["type"] = CLIENT_INFO;
   client_info_msg["language"] = "C++";
   client_info_msg["languageVersion"] = "11";
-  client_info_msg["operatingSystem"] = "";
-  client_info_msg["operatingSystemVersion"] = "";
+  client_info_msg["operatingSystem"] = os_name;
+  client_info_msg["operatingSystemVersion"] = os_version;
   client_info_msg["clientVersion"] = "0.1";
 
   return client_info_msg;
