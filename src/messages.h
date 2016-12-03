@@ -26,3 +26,4 @@ nlohmann::json client_info();
 nlohmann::json default_game_settings();
 nlohmann::json player_registration(std::string snake_name);
 nlohmann::json register_move(std::string next_move, nlohmann::json incoming_json);
+nlohmann::json heart_beat(std::string id);

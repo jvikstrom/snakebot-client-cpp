@@ -7,6 +7,7 @@
 #include <stdio.h>
 #include <string>
 #include <memory>
+#include <thread>
 
 INITIALIZE_EASYLOGGINGPP
 
@@ -20,18 +21,33 @@ using nlohmann::json;
 
 static const std::string host = "localhost";
 static const std::string port = "8080";
-static const std::string venue = "training";
+static const std::string venue = "tournament";
 static Snake snake;
+static std::thread heart_beat_thread;
 
-std::unique_ptr<WebSocket> connect_to_server() {
+std::shared_ptr<WebSocket> connect_to_server() {
   std::string url = "ws://" + host + ":" + port + "/" + venue;
-  std::unique_ptr<WebSocket> ws(WebSocket::from_url(url));
+  std::shared_ptr<WebSocket> ws(WebSocket::from_url(url));
 
   assert(ws);
   return ws;
 }
 
-void route_message(std::unique_ptr<WebSocket> &wsp, const std::string & message) {
+void send_heart_beat(std::shared_ptr<WebSocket> wsp, std::string id) {
+  auto period = std::chrono::seconds(2);
+
+  while (wsp->getReadyState() != WebSocket::CLOSED) {
+    json heart_beat_request = heart_beat(id);
+    wsp->send(heart_beat_request.dump());
+    std::this_thread::sleep_for(period);
+  }
+}
+
+void start_heart_beat(std::shared_ptr<WebSocket> &wsp, std::string &id) {
+  heart_beat_thread = std::thread(send_heart_beat, wsp, id);
+}
+
+void route_message(std::shared_ptr<WebSocket> &wsp, const std::string & message) {
   LOG(DEBUG) << "Received message (in unparsed state)" + message;
 
   json incoming_json = json::parse(message.c_str());
@@ -69,10 +85,13 @@ void route_message(std::unique_ptr<WebSocket> &wsp, const std::string & message)
       json start_game_msg = start_game();
       wsp->send(start_game_msg.dump());
     }
+
+    std::string id = incoming_json["receivingPlayerId"];
+    start_heart_beat(wsp, id);
   } else if (type == INVALID_PLAYER_NAME) {
     snake.on_invalid_playername();
   } else if (type == HEART_BEAT_RESPONSE) {
-
+    // all good, do nothing
   } else if (type == GAME_LINK_EVENT) {
     std::string url = incoming_json["url"];
     LOG(INFO) << "Watch game at: " + url;
@@ -95,6 +114,7 @@ int main(int argc, char* argv[]) {
   auto ws = connect_to_server();
   ws->send(client_info_msg.dump());
   ws->send(player_registration_msg.dump());
+
   ws->poll();
 
   while (ws->getReadyState() != WebSocket::CLOSED) {
@@ -103,6 +123,7 @@ int main(int argc, char* argv[]) {
         route_message(ws, message);
       });
   }
+  heart_beat_thread.join();
 
   LOG(INFO) << "Websocket closed, shutting down";
   return 0;

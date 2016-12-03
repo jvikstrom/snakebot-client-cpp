@@ -109,3 +109,11 @@ json register_move(std::string next_move, json incoming_json) {
 
   return register_move_msg;
 }
+
+json heart_beat(std::string id) {
+  json heart_beat;
+  heart_beat["type"] = HEART_BEAT_REQUEST;
+  heart_beat["receivingPlayerId"] = id;
+
+  return heart_beat;
+}
