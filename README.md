@@ -1,4 +1,8 @@
 # Snakebot Client for C++
-The client currently works but is very much a work in progress. Use at your own risk!
+Do you find a bug or something that doesn't work as expected? Make an issue, or even better: fix it and make a pull request!
 
-Once the client has reached a more finished state I will add documenation detailing how to work with the client.
+## Editing
+Edit the snake at `src/snake.cpp`, primarily the `get_next_move` function.
+
+## Running
+Make the project using `make` and then run it with `./bin/runner`
