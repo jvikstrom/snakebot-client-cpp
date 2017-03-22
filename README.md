@@ -12,7 +12,7 @@ static const std::string host = "snake.cygni.se";
 static const std::string port = "80";
 static const std::string venue = "training";
 ```
-You can change the venue to either 'training' or 'tournament'.
+you may change the venue to either 'training' or 'tournament'.
 
 ## Coding
 Edit the snake at `src/snake.cpp`, primarily the `get_next_move` function.
