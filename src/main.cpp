@@ -19,9 +19,9 @@ INITIALIZE_EASYLOGGINGPP
 using easywsclient::WebSocket;
 using nlohmann::json;
 
-static const std::string host = "localhost";
-static const std::string port = "8080";
-static const std::string venue = "tournament";
+static const std::string host = "snake.cygni.se";
+static const std::string port = "80";
+static const std::string venue = "training";
 static Snake snake;
 static std::thread heart_beat_thread;
 
