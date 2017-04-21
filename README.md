@@ -1,5 +1,5 @@
 # Snakebot Client for C++
-Do you find a bug or something that doesn't work as expected? Make an issue, or even better: fix it and make a pull request!
+C++, whooo!
 
 ## Editing
 First, change the name of your Snakebot in `src/snake.h`. The name
@@ -17,26 +17,22 @@ you may change the venue to either 'training' or 'tournament'.
 ## Coding
 Edit the snake at `src/snake.cpp`, primarily the `get_next_move` function.
 
-## Building
+## Building and running
 Ensure you have the necessary websocket package:
+```bash
+# fetch the necessary external dependencies
+git submodule update --init --recursive 
+# build and run the snakebot
+make run
+# or just build it with
+make build
+``` 
+
+## Docker
+You can also use Docker to build and run the project:
 ```
-git submodule init            
-git submodule update --recursive
+docker-compose run snakebot make run
 ```
 
-Then make the project:
-```
-make
-```
-
-## Running
-```
-bin/runner
-```
-
-## Run the project via docker (if you have problems with compiling):
-```
-make clean
-docker-compose run build
-docker-compose up snakebot
-```
+## Modifying the client itself
+If you modify the client, run `make test` to verify that the test suite is still passing.

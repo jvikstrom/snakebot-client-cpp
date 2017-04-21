@@ -96,7 +96,6 @@ bool is_tile_available_for_movement(const Map& map, const std::tuple<int, int>& 
   switch(tile) {
   case Tile::Empty:
   case Tile::Food:
-  case Tile::SnakeTail:
     return true;
   default:
     return false;
