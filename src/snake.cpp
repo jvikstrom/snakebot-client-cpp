@@ -4,38 +4,38 @@
 
 using nlohmann::json;
 
-std::string Snake::get_next_move(json map) {
+std::string MySnake::get_next_move(Map map) {
   std::string response = "DOWN";
 
-  LOG(INFO) << "Snake is making move " << response << " at worldtick: " << map["worldTick"];
+  LOG(INFO) << "Snake is making move " << response << " at worldtick: " << map.worldTick;
   return response;
 };
 
-void Snake::on_game_ended() {
+void MySnake::on_game_ended() {
   LOG(INFO) << "Game has ended";
 };
 
-void Snake::on_tournament_ended() {
+void MySnake::on_tournament_ended() {
   LOG(INFO) << "Tournament has ended";
 };
 
-void Snake::on_snake_dead(std::string death_reason) {
+void MySnake::on_snake_dead(std::string death_reason) {
   LOG(INFO) << "Our snake has died, reason was: " << death_reason;
 };
 
-void Snake::on_game_starting() {
+void MySnake::on_game_starting() {
   LOG(INFO) << "Game is starting";
 };
 
-void Snake::on_player_registered() {
+void MySnake::on_player_registered() {
   LOG(INFO) << "Player was successfully registered";
 };
 
-void Snake::on_invalid_playername() {
+void MySnake::on_invalid_playername() {
   LOG(INFO) << "The player name is invalid, try another?";
 };
 
-void Snake::on_game_result(nlohmann::json playerRanks) {
+void MySnake::on_game_result(nlohmann::json playerRanks) {
   LOG(INFO) << "Game result:";
   nlohmann::json playerRank;
   el::Logger* defaultLogger = el::Loggers::getLogger("default");

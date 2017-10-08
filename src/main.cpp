@@ -2,6 +2,7 @@
 #include "easylogging++.h"
 #include "snake.h"
 #include "messages.h"
+#include "parser.h"
 
 #include <assert.h>
 #include <stdio.h>
@@ -22,7 +23,7 @@ using nlohmann::json;
 static const std::string host = "snake.cygni.se";
 static const std::string port = "80";
 static const std::string venue = "training";
-static Snake snake;
+static MySnake snake;
 static std::thread heart_beat_thread;
 
 std::shared_ptr<WebSocket> connect_to_server() {
@@ -65,7 +66,7 @@ void route_message(std::shared_ptr<WebSocket> &wsp, const std::string & message)
     wsp->close();
   } else if (type == MAP_UPDATE) {
     json register_move_msg =
-      register_move(snake.get_next_move(incoming_json["map"]), incoming_json);
+      register_move(snake.get_next_move(parse_map_json(incoming_json["map"])), incoming_json);
 
     LOG(DEBUG) << "Responding to map update";
     LOG(DEBUG) << register_move_msg.dump(2);

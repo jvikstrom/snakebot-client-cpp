@@ -1,8 +1,10 @@
 #define CATCH_CONFIG_MAIN
 
+#include <json.hpp>
 #include "catch.hpp"
 #include "../src/structs.h"
 #include "../src/util.h"
+#include "../src/parser.h"
 
 const int MAP_WIDTH = 3;
 
@@ -151,3 +153,91 @@ TEST_CASE("can_not_move_to_walls", "[util]") {
   auto can_move_down = can_snake_move_in_direction(map, snake, Direction::Down);
   REQUIRE(!can_move_down);
 };
+
+TEST_CASE("snake_parser_parses_correctly", "[parser]"){
+	auto j = R"(
+		{
+			"id": "testid",
+			"name": "testname",
+			"points": 200,
+			"positions": [90,91,92,93],
+			"tailProtectedForGameTicks": 3
+		}
+	)"_json;
+
+	Snake snake = parse_snake_json(j);
+	std::vector<int> positions{90,91,92,93};
+	REQUIRE(snake.id == "testid");
+	REQUIRE(snake.name == "testname");
+	REQUIRE(snake.points == 200);
+	REQUIRE(snake.positions == positions);
+	REQUIRE(snake.tailProtectedForGameTicks == 3);
+}
+
+TEST_CASE("map_parser_does_not_fail_on_empty", "[parser]"){
+	auto j = R"(
+		{
+			"width": 10,
+			"height": 10,
+			"worldTick": 20,
+			"foodPositions": [],
+			"obstaclePositions": [],
+			"snakeInfos": []
+		}
+	)"_json;
+	
+	Map map = parse_map_json(j);
+
+	REQUIRE(map.width == 10);
+	REQUIRE(map.height == 10);
+	REQUIRE(map.worldTick == 20);
+	REQUIRE(map.foodPositions == std::vector<int>());
+	REQUIRE(map.obstaclePositions == std::vector<int>());
+	REQUIRE(!map.snakeInfos.size());
+}
+
+TEST_CASE("map_parser_parses_correctly", "[parser]"){
+	auto j = R"(
+		{
+			"height": 10,
+			"width": 10,
+			"worldTick": 20,
+			"foodPositions": [0, 2, 4, 8, 10, 13],
+			"obstaclePositions": [1, 3],
+			"snakeInfos": [
+				{
+					"id": "testid",
+					"name": "testname",
+					"points": 200,
+					"positions": [90, 91, 92, 93],
+					"tailProtectedForGameTicks": 3
+				},
+				{
+					"id": "testid2",
+					"name": "name 2",
+					"points": 0,
+					"positions": [],
+					"tailProtectedForGameTicks": 0
+				}
+			]
+		}
+	)"_json;
+
+	Map map = parse_map_json(j);
+	REQUIRE(map.height == 10);
+	REQUIRE(map.width == 10);
+	REQUIRE(map.worldTick == 20);
+	std::vector<int> foodPositions{0,2,4,8,10,13};
+	REQUIRE(map.foodPositions == foodPositions);
+	std::vector<int> obstaclePositions{1,3};
+	REQUIRE(map.obstaclePositions == obstaclePositions);
+	REQUIRE(map.snakeInfos[0].id == "testid");
+	REQUIRE(map.snakeInfos[0].name == "testname");
+	std::vector<int> snake1positions{90,91,92,93};
+	REQUIRE(map.snakeInfos[0].positions == snake1positions);
+	REQUIRE(map.snakeInfos[0].tailProtectedForGameTicks == 3);
+	REQUIRE(map.snakeInfos[1].id == "testid2");
+	REQUIRE(map.snakeInfos[1].name == "name 2");
+	REQUIRE(map.snakeInfos[1].positions == std::vector<int>());
+	REQUIRE(map.snakeInfos[1].tailProtectedForGameTicks == 0);
+}
