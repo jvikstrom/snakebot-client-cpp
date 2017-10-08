@@ -19,3 +19,10 @@ struct Map {
   std::vector<Snake> snakeInfos;
   int worldTick;
 };
+
+enum class Direction{
+	Down,
+	Up,
+	Left,
+	Right
+};

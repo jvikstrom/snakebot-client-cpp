@@ -7,7 +7,7 @@ class MySnake
 {
 public:
   std::string name = "snake_c++";
-  std::string get_next_move(Map map);
+  Direction get_next_move(Map map);
   void on_game_ended();
   void on_tournament_ended();
   void on_snake_dead(std::string death_reason);

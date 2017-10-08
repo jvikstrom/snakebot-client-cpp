@@ -56,6 +56,21 @@ optional<Snake> get_snake_by_id(const Map& map, const std::string& id) {
   return std::experimental::nullopt;
 }
 
+std::experimental::optional<Snake> get_snake_by_name(const Map& map, const std::string name){
+	auto it = 
+		std::find_if(map.snakeInfos.begin(),
+								map.snakeInfos.end(),
+								[name](Snake snake){
+									return snake.name == name;
+								});
+
+	if(it != map.snakeInfos.end()){
+		return *it;
+	}
+
+	return std::experimental::nullopt;
+}
+
 bool list_contains_position(const std::vector<int>& positions, const int position) {
   return std::find(positions.begin(),
                    positions.end(),

@@ -99,10 +99,10 @@ json player_registration(std::string snake_name) {
   return player_registration_msg;
 }
 
-json register_move(std::string next_move, json incoming_json) {
+json register_move(Direction next_move, json incoming_json) {
   json register_move_msg;
   register_move_msg["type"] = REGISTER_MOVE;
-  register_move_msg["direction"] = next_move;
+  register_move_msg["direction"] = direction_as_string(next_move);
   register_move_msg["gameTick"] = incoming_json["gameTick"];
   register_move_msg["receivingPlayerId"] = incoming_json["receivingPlayerId"];
   register_move_msg["gameId"] = incoming_json["gameId"];

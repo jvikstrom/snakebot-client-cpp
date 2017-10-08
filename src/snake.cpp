@@ -1,14 +1,22 @@
 #include "easylogging++.h"
 #include "json.hpp"
 #include "snake.h"
+#include "util.h"
 
 using nlohmann::json;
 
-std::string MySnake::get_next_move(Map map) {
-  std::string response = "DOWN";
+std::vector<Direction> dirs{Direction::Down, Direction::Up, Direction::Right, Direction::Left};
 
-  LOG(INFO) << "Snake is making move " << response << " at worldtick: " << map.worldTick;
-  return response;
+Direction MySnake::get_next_move(Map map) {
+	Direction move_dir = Direction::Down;
+	for(auto dir : dirs){
+		if(can_snake_move_in_direction(map, get_snake_by_name(map, this->name).value(), dir)){
+			move_dir = dir;
+		}
+	}
+
+  LOG(INFO) << "Snake is making move " << direction_as_string(move_dir) << " at worldtick: " << map.worldTick;
+  return move_dir;
 };
 
 void MySnake::on_game_ended() {

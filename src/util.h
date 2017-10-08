@@ -14,17 +14,11 @@ enum class Tile {
     SnakeTail
 };
 
-enum class Direction {
-    Down,
-    Up,
-    Left,
-    Right
-};
-
 std::string direction_as_string(const Direction& direction);
 std::tuple<int, int> direction_as_movement_delta(const Direction& direction);
 bool inside_map(const Map& map, const std::tuple<int, int>& coordinate);
 std::experimental::optional<Snake>get_snake_by_id(const Map& map, const std::string& id);
+std::experimental::optional<Snake> get_snake_by_name(const Map& map, const std::string name);
 Tile get_tile_at(const Map& map, const std::tuple<int, int>& coordinate);
 bool is_tile_available_for_movement(const Map& map, const std::tuple<int, int>&);
 bool can_snake_move_in_direction(const Map& map, const Snake& snake, const Direction& direction);

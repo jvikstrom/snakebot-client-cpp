@@ -1,6 +1,8 @@
 #pragma once
 
 #include "json.hpp"
+#include "util.h"
+#include "structs.h"
 
 // Inbound
 static const std::string GAME_ENDED = "se.cygni.snake.api.event.GameEndedEvent";
@@ -25,5 +27,5 @@ nlohmann::json start_game();
 nlohmann::json client_info();
 nlohmann::json default_game_settings();
 nlohmann::json player_registration(std::string snake_name);
-nlohmann::json register_move(std::string next_move, nlohmann::json incoming_json);
+nlohmann::json register_move(Direction next_move, nlohmann::json incoming_json);
 nlohmann::json heart_beat(std::string id);
