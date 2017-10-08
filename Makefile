@@ -20,7 +20,7 @@ $(BUILDDIR)/%.o: $(SRCDIR)/%.$(SRCEXT)
 	$(CC) $(CFLAGS) $(INC) -c -o $@ $<
 
 $(TEST_BINARY): build/util.o test/tester.cpp
-	$(CC) build/util.o $(CFLAGS) test/tester.cpp $(INC) $(LIB) -o $(TEST_BINARY)
+	$(CC) build/util.o build/parser.o $(CFLAGS) test/tester.cpp $(INC) $(LIB) -o $(TEST_BINARY)
 
 build: $(TARGET)
 
